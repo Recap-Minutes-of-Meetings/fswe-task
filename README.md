@@ -11,5 +11,3 @@
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/b9ade25a602c4c55a3c16653f9210a86)](https://www.codacy.com/gh/Recap-Minutes-of-Meetings/fswe-task/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Recap-Minutes-of-Meetings/fswe-task&amp;utm_campaign=Badge_Grade)
 
-## License
-MIT
