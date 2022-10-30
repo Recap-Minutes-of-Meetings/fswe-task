@@ -9,7 +9,6 @@
 [![GitHub stars](https://img.shields.io/github/stars/Recap-Minutes-of-Meetings/fswe-task.svg)](https://github.com/Recap-Minutes-of-Meetings/fswe-task/stargazers)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/Recap-Minutes-of-Meetings/fswe-task/pulls)
 
-[![CodeFactor](https://www.codefactor.io/repository/github/Recap-Minutes-of-Meetings/fswe-task/badge)](https://www.codefactor.io/repository/github/Recap-Minutes-of-Meetings/fswe-task)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/b9ade25a602c4c55a3c16653f9210a86)](https://www.codacy.com/gh/Recap-Minutes-of-Meetings/fswe-task/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Recap-Minutes-of-Meetings/fswe-task&amp;utm_campaign=Badge_Grade)
 
 ## License
