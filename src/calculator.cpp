@@ -1,84 +1,115 @@
 #include <iostream>
 #include <climits>
 #include <cctype>
-#include "calc.h"
+#include "calculator.h"
 
 using namespace std;
 
-int prior(int c) {
-    if (c == '+' || c == '-') {
+int Calculator::prior(int c)
+{
+    if (c == '+' || c == '-')
+    {
         return 1;
-    } else if (c == '*' || c == '/') {
+    }
+    else if (c == '*' || c == '/')
+    {
         return 2;
-    } else {
+    }
+    else
+    {
         return 0;
     }
 }
 
-int count(int a, int op, int b) {
-    switch (op) {
-        case '+':
-            return a + b;
-        case '-':
-            return a - b;
-        case '*':
-            return a * b;
-        case '/':
-            if (b == 0) {
-                throw Exception("Error: division by zero");
-            }
-            return a / b;
-        default:
-            return 0;
+int Calculator::count(int a, int op, int b)
+{
+    switch (op)
+    {
+    case '+':
+        return a + b;
+    case '-':
+        return a - b;
+    case '*':
+        return a * b;
+    case '/':
+        if (b == 0)
+        {
+            throw Exception("Error: division by zero");
+        }
+        return a / b;
+    default:
+        return 0;
     }
 }
 
-int is_aryphmetic(char a) {
+int Calculator::is_aryphmetic(char a)
+{
     return (a == '+' || a == '-' || a == '*' || a == '/');
 }
 
-void rec_delete(struct List *l) {
-    if (l != nullptr) {
+void Calculator::rec_delete(struct List *l)
+{
+    if (l != nullptr)
+    {
         rec_delete(l->prev);
         delete l;
     }
 }
 
-enum Expect {
+enum Expect
+{
     NUM,
     OPERATOR,
     READING_NUM
 };
 
-int last_calc(struct List *prev, int cur_num) {
+int Calculator::last_calc(struct List *prev, int cur_num)
+{
     int res;
-    if (prev->prior == 0) {
+    if (prev->prior == 0)
+    {
         rec_delete(prev);
         return cur_num;
-    } else if (prev->prior > prev->prev->prior) {
-        try {
+    }
+    else if (prev->prior > prev->prev->prior)
+    {
+        try
+        {
             prev->num = count(prev->num, prev->op, cur_num);
-        } catch (struct Exception &e) {
+        }
+        catch (struct Exception &e)
+        {
             rec_delete(prev);
             throw;
         }
-        if (prev->prev->prior != 0) {
-            try {
+        if (prev->prev->prior != 0)
+        {
+            try
+            {
                 res = count(prev->prev->num, prev->prev->op, prev->num);
-            } catch (struct Exception &e) {
+            }
+            catch (struct Exception &e)
+            {
                 rec_delete(prev);
                 throw;
             }
-        } else {
+        }
+        else
+        {
             res = prev->num;
         }
         rec_delete(prev);
         return res;
-    } else if (prev->prev->prior != 0) {
-        try {
+    }
+    else if (prev->prev->prior != 0)
+    {
+        try
+        {
             prev->num = count(prev->prev->num, prev->prev->op, prev->num);
             res = count(prev->num, prev->op, cur_num);
-        } catch (struct Exception &e) {
+        }
+        catch (struct Exception &e)
+        {
             rec_delete(prev);
             throw;
         }
@@ -89,10 +120,11 @@ int last_calc(struct List *prev, int cur_num) {
     return 0;
 }
 
+int Calculator::calc(const char *s, struct List *prev)
+{
 
-int calc(const char *s, struct List *prev) {
-
-    if (prev == nullptr) {
+    if (prev == nullptr)
+    {
         prev = new List;
     }
 
@@ -100,63 +132,97 @@ int calc(const char *s, struct List *prev) {
     long cur_num = 0;
     int cur_op;
     bool was_minus = false;
-    while (1) {
-        if (is_expecting == NUM) {
-            if (*s == '-') {
+    while (1)
+    {
+        if (is_expecting == NUM)
+        {
+            if (*s == '-')
+            {
                 was_minus = !was_minus;
-            } else if (isdigit(*s)) {
+            }
+            else if (isdigit(*s))
+            {
                 cur_num = *s - '0';
                 is_expecting = READING_NUM;
-            } else if (isspace(*s)) {
+            }
+            else if (isspace(*s))
+            {
                 s++;
                 continue;
-            } else {
+            }
+            else
+            {
                 rec_delete(prev);
                 throw Exception("Error: Can't interpret input into expression");
             }
-        } else if (is_expecting == READING_NUM) {
-            if (isdigit(*s)) {
+        }
+        else if (is_expecting == READING_NUM)
+        {
+            if (isdigit(*s))
+            {
                 cur_num *= 10;
                 cur_num += *s - '0';
-                if ((!was_minus && cur_num > INT_MAX) || (was_minus && cur_num > INT_MAX + 1l)) {
+                if ((!was_minus && cur_num > INT_MAX) || (was_minus && cur_num > INT_MAX + 1l))
+                {
                     rec_delete(prev);
                     throw Exception("Error: The number is too big to be of type int");
                 }
-            } else if (isspace(*s)) {
+            }
+            else if (isspace(*s))
+            {
                 is_expecting = OPERATOR;
-                if (was_minus) {
+                if (was_minus)
+                {
                     cur_num = -cur_num;
                 }
-            } else if (is_aryphmetic(*s)) {
-                if (was_minus) {
+            }
+            else if (is_aryphmetic(*s))
+            {
+                if (was_minus)
+                {
                     cur_num = -cur_num;
                 }
                 cur_op = *s;
                 s++;
                 break;
-            } else if (*s == '\0') {
-                if (was_minus) {
+            }
+            else if (*s == '\0')
+            {
+                if (was_minus)
+                {
                     cur_num = -cur_num;
                 }
                 return last_calc(prev, cur_num);
-            } else {
+            }
+            else
+            {
                 rec_delete(prev);
                 throw Exception("Error: Can't interpret input into expression");
             }
-        } else if (is_expecting == OPERATOR){
-            if (is_aryphmetic(*s)) {
+        }
+        else if (is_expecting == OPERATOR)
+        {
+            if (is_aryphmetic(*s))
+            {
                 cur_op = *s;
                 s++;
                 break;
-            } else if (isspace(*s)) {
+            }
+            else if (isspace(*s))
+            {
                 s++;
                 continue;
-            } else if (*s == '\0') {
-                if (was_minus) {
+            }
+            else if (*s == '\0')
+            {
+                if (was_minus)
+                {
                     cur_num = -cur_num;
                 }
                 return last_calc(prev, cur_num);
-            } else {
+            }
+            else
+            {
                 rec_delete(prev);
                 throw Exception("Error: Can't interpret input into expression");
             }
@@ -165,13 +231,20 @@ int calc(const char *s, struct List *prev) {
     }
 
     auto l = new List(cur_op, cur_num, prior(cur_op), prev);
-    if (l->prev->prior < l->prior) {
+    if (l->prev->prior < l->prior)
+    {
         return calc(s, l);
-    } else {
-        while (l->prev->prior >= l->prior) {
-            try {
+    }
+    else
+    {
+        while (l->prev->prior >= l->prior)
+        {
+            try
+            {
                 l->num = count(l->prev->num, l->prev->op, l->num);
-            } catch (struct Exception &e){
+            }
+            catch (struct Exception &e)
+            {
                 rec_delete(prev);
                 throw;
             }
@@ -182,5 +255,3 @@ int calc(const char *s, struct List *prev) {
         return calc(s, l);
     }
 }
-
-
