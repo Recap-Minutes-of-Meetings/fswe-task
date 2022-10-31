@@ -17,9 +17,9 @@ jobs:
       run: pwd && ls -l
     - name: mkdir build
       run: mkdir -p build/
+    - name: prereqs
+      run: ./prereqs.sh
     - name: build
-      run: cmake .. && make && ls -l
-      working-directory: ./build/
-    - name: run test
-      run: ls -l && ./TestSample1
-      working-directory: ./build/test
+      run: ./build.sh
+    - name: test
+      run: ./test.sh
