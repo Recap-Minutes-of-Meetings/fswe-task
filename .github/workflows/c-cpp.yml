@@ -15,11 +15,9 @@ jobs:
     - uses: actions/checkout@v2
     - name: pwd
       run: pwd && ls -l
-    - name: mkdir build
-      run: mkdir -p build/
     - name: prereqs
-      run: ./prereqs.sh
+      run: bash ./prereqs.sh
     - name: build
-      run: ./build.sh
+      run: bash ./build.sh
     - name: test
-      run: ./test.sh
+      run: bash ./test.sh
