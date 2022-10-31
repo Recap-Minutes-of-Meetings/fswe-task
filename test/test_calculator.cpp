@@ -16,7 +16,7 @@ TEST(TestSuccess, Success) {
   {"2-3*4*2+1--2+-5/2", "-21"},
   };
 
-  for (auto x : bad_cases)
+  for (auto x : good_cases)
       EXPECT_EQ(std::stoi(x[1]), calculator.calc(x[0]));
 }
 
